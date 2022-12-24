@@ -15,19 +15,18 @@ def get_playlists(l: list[str]) -> list[str]:
             urls.append(link)
     for link in playlist_urls: 
         urls.append(link)
-    
     return urls
 
 def download(url: str, destination: str, audio_only=False):
-    url = YouTube(url)
-    print(f"downloading {url.title}")
-    video = url.streams.filter(only_audio=audio_only).first()
+    yturl = YouTube(url)
+    print(f"downloading {yturl.title}")
+    video = yturl.streams.filter(only_audio=audio_only).first()
     out_file = video.download(output_path=destination)
     base, ext = os.path.splitext(out_file)
     new_file = base + '.mp3'
     os.rename(out_file, new_file)
 
-    print(f"downloaded {url.title} successfully")
+    print(f"downloaded {yturl.title} successfully")
 
 def start_cli():
     urls: list[str] = []
@@ -40,7 +39,7 @@ def start_cli():
     print("  Enter the destination (leave blank for current directory)")
     destination = str(input("  >> ")) or '.'
     for url in get_playlists(urls):
-        download(url, destination, iter=i)
+        download(url, destination)
     print(urls) 
 
 if __name__ == '__main__':
